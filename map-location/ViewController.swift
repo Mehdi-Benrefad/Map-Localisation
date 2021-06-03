@@ -14,7 +14,7 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        //Longitude and latitude [41.004844, 28.976239]
+        //Longitude et latitude [41.004844, 28.976239]
         let latitude : CLLocationDegrees = 28.976239
         let longitude : CLLocationDegrees = 41.004844
         
@@ -29,17 +29,35 @@ class ViewController: UIViewController {
         let region: MKCoordinateRegion = MKCoordinateRegion(center: location, span: span)
         //ajouter la region a la carte
         MyMap.setRegion(region, animated: true)
-        //ajouter des annotation
+        
+        //Ajouter des annotation
         let annotation = MKPointAnnotation()
-        //ajout du titre
+        //Ajout du titre
         annotation.title = "Sultan Ahmed"
-        //ajout du soustitre
+        //Ajout du soustitre
         annotation.subtitle = "Turkey Istanbul"
-        //ajout de la position
+        //Ajout de la position
         annotation.coordinate = location
-        //ajouter l'annotation a la carte
+        //Ajouter l'annotation a la carte
         MyMap.addAnnotation(annotation)
+        
+        //Ajout des Markers [quand on presse lontement su une position de l'ecran une nouvelle annotation s'ajoutes]
+         let mylongpress = UILongPressGestureRecognizer(target: self, action: #selector(ViewController.longPress(gestureRecognizer:)))
+        //definition de la duree du clic enfonce
+        mylongpress.minimumPressDuration = 2
+        MyMap.addGestureRecognizer(mylongpress)
+        
     }
+
+  @objc func longPress(gestureRecognizer: UIGestureRecognizer){
+           let touchPoint = gestureRecognizer.location(in: MyMap)
+           let coordinate = MyMap.convert(touchPoint, toCoordinateFrom: MyMap)
+            let annotation = MKPointAnnotation()
+           annotation.coordinate = coordinate
+            annotation.title = "static mark"
+            annotation.subtitle = "static"
+            MyMap.addAnnotation(annotation)
+       }
 
 
 }
