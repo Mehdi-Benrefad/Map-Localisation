@@ -14,9 +14,9 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        //Longitude and latitude [34.25584742514108, -6.594749796060918]
-        let latitude : CLLocationDegrees = -6
-        let longitude : CLLocationDegrees = 34
+        //Longitude and latitude [41.004844, 28.976239]
+        let latitude : CLLocationDegrees = 28.976239
+        let longitude : CLLocationDegrees = 41.004844
         
         //la distance entre les points de tracage
         let latDelta : CLLocationDegrees = 0.05
@@ -29,6 +29,16 @@ class ViewController: UIViewController {
         let region: MKCoordinateRegion = MKCoordinateRegion(center: location, span: span)
         //ajouter la region a la carte
         MyMap.setRegion(region, animated: true)
+        //ajouter des annotation
+        let annotation = MKPointAnnotation()
+        //ajout du titre
+        annotation.title = "Sultan Ahmed"
+        //ajout du soustitre
+        annotation.subtitle = "Turkey Istanbul"
+        //ajout de la position
+        annotation.coordinate = location
+        //ajouter l'annotation a la carte
+        MyMap.addAnnotation(annotation)
     }
 
 
