@@ -17,9 +17,6 @@
                         <subviews>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="lpB-KG-NdE">
                                 <rect key="frame" x="20" y="20" width="374" height="636"/>
-                                <connections>
-                                    <outlet property="delegate" destination="BYZ-38-t0r" id="TaI-Nh-djw"/>
-                                </connections>
                             </mapView>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
