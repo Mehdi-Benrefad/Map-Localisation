@@ -11,10 +11,8 @@
 
   
   <h4>User Position:</h4>
-  ![userposition](https://user-images.githubusercontent.com/62174583/120862570-15ac5280-c581-11eb-8b51-ed0cd581249b.PNG)
   <img src="App-result-Images/userposition.PNG"  width="200" height="400">
   
   <h4>Markers:<h4>
-    ![add markers](https://user-images.githubusercontent.com/62174583/120862650-34aae480-c581-11eb-8d4d-1db59be31acc.PNG)
-    <img src="App-result-Images/add markers.PNG"  width="200" height="400">
+  <img src="App-result-Images/add markers.PNG"  width="200" height="400">
 
