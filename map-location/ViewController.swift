@@ -20,7 +20,7 @@ class ViewController: UIViewController , MKMapViewDelegate , CLLocationManagerDe
     var latitude : CLLocationDegrees = 38.897957
     var longitude : CLLocationDegrees = -77.036560
     
-    //get the user location
+    //user location
     var location = ""
     var subtitlelocation = ""
     
@@ -68,6 +68,34 @@ class ViewController: UIViewController , MKMapViewDelegate , CLLocationManagerDe
         //remplir les labels
         putDataOnTheLabels()
     }
+    
+    
+    
+    
+    
+    
+    //fonction qui permet de trace la position dans la carte
+    func tracePositionInTheMap (){
+        //Ajouter des annotation
+        let annotation = MKPointAnnotation()
+        //Ajout du titre
+        annotation.title = self.location
+        //Ajout du soustitre
+        annotation.subtitle = self.subtitlelocation
+        //Ajout de la position
+        annotation.coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+        MyMap.addAnnotation(annotation)
+        let region = MKCoordinateRegion(center: annotation.coordinate, latitudinalMeters: 1000, longitudinalMeters: 1000)
+        //ajouter la region a la carte
+        MyMap.setRegion(region, animated: true)
+        
+        //Ajout des Markers [quand on presse lontement su une position de l'ecran une nouvelle annotation s'ajoutes]
+         let mylongpress = UILongPressGestureRecognizer(target: self, action: #selector(ViewController.longPress(gestureRecognizer:)))
+        //definition de la duree du clic enfonce
+        mylongpress.minimumPressDuration = 2
+        MyMap.addGestureRecognizer(mylongpress)
+    }
+    
     
     
     //fonction qui s'occupe des markers
@@ -129,28 +157,6 @@ class ViewController: UIViewController , MKMapViewDelegate , CLLocationManagerDe
     
     
     
-    //fonction qui permet de trace la position dans la carte
-    func tracePositionInTheMap (){
-        //Ajouter des annotation
-        let annotation = MKPointAnnotation()
-        //Ajout du titre
-        annotation.title = self.location
-        //Ajout du soustitre
-        annotation.subtitle = self.subtitlelocation
-        //Ajout de la position
-        annotation.coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
-        MyMap.addAnnotation(annotation)
-        let region = MKCoordinateRegion(center: annotation.coordinate, latitudinalMeters: 1000, longitudinalMeters: 1000)
-        //ajouter la region a la carte
-        MyMap.setRegion(region, animated: true)
-        
-        //Ajout des Markers [quand on presse lontement su une position de l'ecran une nouvelle annotation s'ajoutes]
-         let mylongpress = UILongPressGestureRecognizer(target: self, action: #selector(ViewController.longPress(gestureRecognizer:)))
-        //definition de la duree du clic enfonce
-        mylongpress.minimumPressDuration = 2
-        MyMap.addGestureRecognizer(mylongpress)
-    }
-    
     
     //recuperer les donnees a partir de l localisation
     func getDataFromUserLocation(_ userLocation:CLLocation){
@@ -199,6 +205,7 @@ class ViewController: UIViewController , MKMapViewDelegate , CLLocationManagerDe
                    }
                }
     }
+    
     
     func putDataOnTheLabels(){
         latitudeLabel.text = String(latitude)
