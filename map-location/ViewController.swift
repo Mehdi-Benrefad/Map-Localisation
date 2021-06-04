@@ -21,6 +21,9 @@ class ViewController: UIViewController , MKMapViewDelegate , CLLocationManagerDe
     var longitude : CLLocationDegrees = -77.036560
     
     //get the user location
+    var location = ""
+    var subtitlelocation = ""
+    
     var locationManager = CLLocationManager()
     
     override func viewDidLoad() {
@@ -57,7 +60,7 @@ class ViewController: UIViewController , MKMapViewDelegate , CLLocationManagerDe
         let userLocalisation:CLLocation = locations[0]
         latitude = userLocalisation.coordinate.latitude
         longitude = userLocalisation.coordinate.longitude
-        tracePositionInTheMap ()
+        //tracePositionInTheMap()
         
         //get date from user location
         getDataFromLocation(userLocalisation)
@@ -85,9 +88,9 @@ class ViewController: UIViewController , MKMapViewDelegate , CLLocationManagerDe
         //Ajouter des annotation
         let annotation = MKPointAnnotation()
         //Ajout du titre
-        annotation.title = "My Location"
+        annotation.title = self.location
         //Ajout du soustitre
-        annotation.subtitle = "Location"
+        annotation.subtitle = self.subtitlelocation
         //Ajout de la position
         annotation.coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
         MyMap.addAnnotation(annotation)
@@ -137,10 +140,15 @@ class ViewController: UIViewController , MKMapViewDelegate , CLLocationManagerDe
                            
                         print( mythoroughfare + " \n" + subLocality + "  \n" + subAdministrativeArea + "  \n" + postalCode + "  \n" + country )
                            
+                        //put location on the global variable
+                        self.location = subLocality
+                        self.subtitlelocation = subAdministrativeArea
+                        
                         //put country and location in labels
                         self.locationLabel.text = subLocality
                         self.countryLabel.text = subAdministrativeArea + " / " + postalCode
                         
+                        self.tracePositionInTheMap()
                        }
                    }
                }
