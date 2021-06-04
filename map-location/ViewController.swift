@@ -63,7 +63,7 @@ class ViewController: UIViewController , MKMapViewDelegate , CLLocationManagerDe
         //tracePositionInTheMap()
         
         //get date from user location
-        getDataFromLocation(userLocalisation)
+        getDataFromUserLocation(userLocalisation)
         
         //remplir les labels
         putDataOnTheLabels()
@@ -72,13 +72,59 @@ class ViewController: UIViewController , MKMapViewDelegate , CLLocationManagerDe
     
     //fonction qui s'occupe des markers
     @objc func longPress(gestureRecognizer: UIGestureRecognizer){
-             let touchPoint = gestureRecognizer.location(in: MyMap)
-             let coordinate = MyMap.convert(touchPoint, toCoordinateFrom: MyMap)
-              let annotation = MKPointAnnotation()
-             annotation.coordinate = coordinate
-              annotation.title = "static mark"
-              annotation.subtitle = "static"
-              MyMap.addAnnotation(annotation)
+        
+        let touchPoint = gestureRecognizer.location(in: MyMap)
+        let coordinate = MyMap.convert(touchPoint, toCoordinateFrom: MyMap)
+        //get location from coordinate
+        let loc : CLLocation = CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
+        
+        //get data from the new location
+        CLGeocoder().reverseGeocodeLocation(loc){
+                (placemarks,error) in
+                if error != nil {
+                    print(error!)
+                }else{
+                    if let placemark = placemarks?[0]{
+                        var mythoroughfare = ""
+                        if placemark.thoroughfare != nil {
+                            mythoroughfare =  placemark.thoroughfare!
+                        }
+                        
+                        var subLocality = ""
+                        if placemark.subLocality != nil {
+                               subLocality =  placemark.thoroughfare!
+                                           }
+                        
+                        var subAdministrativeArea = ""
+                        if placemark.subAdministrativeArea != nil {
+                         subAdministrativeArea =  placemark.subAdministrativeArea!
+                                                          }
+                        var postalCode = ""
+                                       if placemark.postalCode != nil {
+                            postalCode =  placemark.postalCode!
+                                                                         }
+                        let country = ""
+                                 if placemark.country != nil {
+                                postalCode =  placemark.country!
+                                                      }
+                    print("************************************")
+                    print( mythoroughfare + " \n" + subLocality + "  \n" + subAdministrativeArea + "  \n" + postalCode + "  \n" + country )
+                    print("************************************")
+                        
+                    //create annotation
+                    let annotation = MKPointAnnotation()
+                    annotation.coordinate = coordinate
+                    annotation.title = subLocality
+                    annotation.subtitle = subAdministrativeArea
+                        
+                    //add annotation to the map
+                    self.MyMap.addAnnotation(annotation)
+                   
+                    }
+                }
+            }
+             
+             
          }
     
     
@@ -107,7 +153,7 @@ class ViewController: UIViewController , MKMapViewDelegate , CLLocationManagerDe
     
     
     //recuperer les donnees a partir de l localisation
-    func getDataFromLocation(_ userLocation:CLLocation){
+    func getDataFromUserLocation(_ userLocation:CLLocation){
         
             CLGeocoder().reverseGeocodeLocation(userLocation ){
                    (placemarks,error) in
