@@ -12,6 +12,10 @@ import CoreLocation
 
 class ViewController: UIViewController , MKMapViewDelegate , CLLocationManagerDelegate{
     @IBOutlet weak var MyMap: MKMapView!
+    @IBOutlet weak var latitudeLabel: UILabel!
+    @IBOutlet weak var longitudeLabe: UILabel!
+    @IBOutlet weak var locationLabel: UILabel!
+    @IBOutlet weak var countryLabel: UILabel!
     
     var latitude : CLLocationDegrees = 38.897957
     var longitude : CLLocationDegrees = -77.036560
@@ -57,6 +61,9 @@ class ViewController: UIViewController , MKMapViewDelegate , CLLocationManagerDe
         
         //get date from user location
         getDataFromLocation(userLocalisation)
+        
+        //remplir les labels
+        putDataOnTheLabels()
     }
     
     
@@ -117,7 +124,7 @@ class ViewController: UIViewController , MKMapViewDelegate , CLLocationManagerDe
                            
                            var subAdministrativeArea = ""
                            if placemark.subAdministrativeArea != nil {
-                subAdministrativeArea =  placemark.subAdministrativeArea!
+                            subAdministrativeArea =  placemark.subAdministrativeArea!
                                                              }
                            var postalCode = ""
                                           if placemark.postalCode != nil {
@@ -130,9 +137,21 @@ class ViewController: UIViewController , MKMapViewDelegate , CLLocationManagerDe
                            
                         print( mythoroughfare + " \n" + subLocality + "  \n" + subAdministrativeArea + "  \n" + postalCode + "  \n" + country )
                            
+                        //put country and location in labels
+                        self.locationLabel.text = subLocality
+                        self.countryLabel.text = subAdministrativeArea + " / " + postalCode
+                        
                        }
                    }
                }
+    }
+    
+    func putDataOnTheLabels(){
+        latitudeLabel.text = String(latitude)
+        longitudeLabe.text = String(longitude)
+        //locationLabel.text = subLocality [go to getDataFromLocation()]
+        //countryLabel.text = country [go to getDataFromLocation()]
+        
     }
 }
 
