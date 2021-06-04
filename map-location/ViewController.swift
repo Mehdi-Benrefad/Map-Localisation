@@ -8,27 +8,74 @@
 
 import UIKit
 import MapKit
+import CoreLocation
 
-class ViewController: UIViewController , MKMapViewDelegate{
+class ViewController: UIViewController , MKMapViewDelegate , CLLocationManagerDelegate{
     @IBOutlet weak var MyMap: MKMapView!
+    
+    var latitude : CLLocationDegrees = 38.897957
+    var longitude : CLLocationDegrees = -77.036560
+    
+    //get the user location
+    var locationManager = CLLocationManager()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        //make the view controller as a delegate of the location manager
+        locationManager.delegate = self as! CLLocationManagerDelegate
+        //precision
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        //authorisation
+        locationManager.requestWhenInUseAuthorization()
+        locationManager.startUpdatingLocation()
+        
+        
+        
+        /*
+            Debut du tracage
+         */
         //Longitude et latitude [41.004844, 28.976239]
         //usa
-        let latitude : CLLocationDegrees = 38.897957
-        let longitude : CLLocationDegrees = -77.036560
+        //let latitude : CLLocationDegrees = 38.897957
+        //let longitude : CLLocationDegrees = -77.036560
         //turkey
         //let latitude : CLLocationDegrees = 41.004844
         //let longitude : CLLocationDegrees = 28.976239
+        //tracePositionInTheMap ()
         
+    }
+
+  @objc func longPress(gestureRecognizer: UIGestureRecognizer){
+           let touchPoint = gestureRecognizer.location(in: MyMap)
+           let coordinate = MyMap.convert(touchPoint, toCoordinateFrom: MyMap)
+            let annotation = MKPointAnnotation()
+           annotation.coordinate = coordinate
+            annotation.title = "static mark"
+            annotation.subtitle = "static"
+            MyMap.addAnnotation(annotation)
+       }
+
+    
+    //ecuperer la localisation de l'utilisateur et l'affichage de cette derniere dans la carte
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]){
+        print(locations)
+        let userLocalisation:CLLocation = locations[0]
+        latitude = userLocalisation.coordinate.latitude
+        longitude = userLocalisation.coordinate.longitude
+        tracePositionInTheMap ()
+    }
+    
+    
+    
+    //fonction qui permet de trace la position dans la carte
+    func tracePositionInTheMap (){
         //Ajouter des annotation
         let annotation = MKPointAnnotation()
         //Ajout du titre
-        annotation.title = "The white house"
+        annotation.title = "My Location"
         //Ajout du soustitre
-        annotation.subtitle = "USA"
+        annotation.subtitle = "Location"
         //Ajout de la position
         annotation.coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
         MyMap.addAnnotation(annotation)
@@ -42,17 +89,5 @@ class ViewController: UIViewController , MKMapViewDelegate{
         mylongpress.minimumPressDuration = 2
         MyMap.addGestureRecognizer(mylongpress)
     }
-
-  @objc func longPress(gestureRecognizer: UIGestureRecognizer){
-           let touchPoint = gestureRecognizer.location(in: MyMap)
-           let coordinate = MyMap.convert(touchPoint, toCoordinateFrom: MyMap)
-            let annotation = MKPointAnnotation()
-           annotation.coordinate = coordinate
-            annotation.title = "static mark"
-            annotation.subtitle = "static"
-            MyMap.addAnnotation(annotation)
-       }
-
-     
 }
 
