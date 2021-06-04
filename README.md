@@ -8,3 +8,11 @@
   -privacy location when in use + "message" (ex:This app need to know your location)
   -privcy location always usage + "message"  (ex: This app need to know your permission)<li>
     </ul>
+
+  
+  <h4>User Position:</h4>
+  ![userposition](https://user-images.githubusercontent.com/62174583/120862570-15ac5280-c581-11eb-8b51-ed0cd581249b.PNG)
+  
+  <h4>Markers:<h4>
+    ![add markers](https://user-images.githubusercontent.com/62174583/120862650-34aae480-c581-11eb-8d4d-1db59be31acc.PNG)
+
