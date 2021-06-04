@@ -23,7 +23,7 @@ class ViewController: UIViewController , MKMapViewDelegate , CLLocationManagerDe
         super.viewDidLoad()
         
         //make the view controller as a delegate of the location manager
-        locationManager.delegate = self as! CLLocationManagerDelegate
+        locationManager.delegate = self as CLLocationManagerDelegate
         //precision
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         //authorisation
@@ -46,25 +46,30 @@ class ViewController: UIViewController , MKMapViewDelegate , CLLocationManagerDe
         
     }
 
-  @objc func longPress(gestureRecognizer: UIGestureRecognizer){
-           let touchPoint = gestureRecognizer.location(in: MyMap)
-           let coordinate = MyMap.convert(touchPoint, toCoordinateFrom: MyMap)
-            let annotation = MKPointAnnotation()
-           annotation.coordinate = coordinate
-            annotation.title = "static mark"
-            annotation.subtitle = "static"
-            MyMap.addAnnotation(annotation)
-       }
-
     
-    //ecuperer la localisation de l'utilisateur et l'affichage de cette derniere dans la carte
+    //recuperer la localisation de l'utilisateur et l'affichage de cette derniere dans la carte
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]){
         print(locations)
         let userLocalisation:CLLocation = locations[0]
         latitude = userLocalisation.coordinate.latitude
         longitude = userLocalisation.coordinate.longitude
         tracePositionInTheMap ()
+        
+        //get date from user location
+        getDataFromLocation(userLocalisation)
     }
+    
+    
+    //fonction qui s'occupe des markers
+    @objc func longPress(gestureRecognizer: UIGestureRecognizer){
+             let touchPoint = gestureRecognizer.location(in: MyMap)
+             let coordinate = MyMap.convert(touchPoint, toCoordinateFrom: MyMap)
+              let annotation = MKPointAnnotation()
+             annotation.coordinate = coordinate
+              annotation.title = "static mark"
+              annotation.subtitle = "static"
+              MyMap.addAnnotation(annotation)
+         }
     
     
     
@@ -88,6 +93,46 @@ class ViewController: UIViewController , MKMapViewDelegate , CLLocationManagerDe
         //definition de la duree du clic enfonce
         mylongpress.minimumPressDuration = 2
         MyMap.addGestureRecognizer(mylongpress)
+    }
+    
+    
+    //recuperer les donnees a partir de l localisation
+    func getDataFromLocation(_ userLocation:CLLocation){
+        
+            CLGeocoder().reverseGeocodeLocation(userLocation ){
+                   (placemarks,error) in
+                   if error != nil {
+                       print(error!)
+                   }else{
+                       if let placemark = placemarks?[0]{
+                           var mythoroughfare = ""
+                           if placemark.thoroughfare != nil {
+                               mythoroughfare =  placemark.thoroughfare!
+                           }
+                           
+                           var subLocality = ""
+                           if placemark.subLocality != nil {
+                                  subLocality =  placemark.thoroughfare!
+                                              }
+                           
+                           var subAdministrativeArea = ""
+                           if placemark.subAdministrativeArea != nil {
+                subAdministrativeArea =  placemark.subAdministrativeArea!
+                                                             }
+                           var postalCode = ""
+                                          if placemark.postalCode != nil {
+                               postalCode =  placemark.postalCode!
+                                                                            }
+                           let country = ""
+                                    if placemark.country != nil {
+                                   postalCode =  placemark.country!
+                                                         }
+                           
+                        print( mythoroughfare + " \n" + subLocality + "  \n" + subAdministrativeArea + "  \n" + postalCode + "  \n" + country )
+                           
+                       }
+                   }
+               }
     }
 }
 
