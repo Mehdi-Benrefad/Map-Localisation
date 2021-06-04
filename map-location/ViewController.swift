@@ -16,8 +16,12 @@ class ViewController: UIViewController , MKMapViewDelegate{
         super.viewDidLoad()
         
         //Longitude et latitude [41.004844, 28.976239]
+        //usa
         let latitude : CLLocationDegrees = 38.897957
         let longitude : CLLocationDegrees = -77.036560
+        //turkey
+        //let latitude : CLLocationDegrees = 41.004844
+        //let longitude : CLLocationDegrees = 28.976239
         
         //Ajouter des annotation
         let annotation = MKPointAnnotation()
@@ -28,7 +32,7 @@ class ViewController: UIViewController , MKMapViewDelegate{
         //Ajout de la position
         annotation.coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
         MyMap.addAnnotation(annotation)
-        let region = MKCoordinateRegion(center: annotation.coordinate, latitudinalMeters: 500, longitudinalMeters: 500)
+        let region = MKCoordinateRegion(center: annotation.coordinate, latitudinalMeters: 1000, longitudinalMeters: 1000)
         //ajouter la region a la carte
         MyMap.setRegion(region, animated: true)
         
