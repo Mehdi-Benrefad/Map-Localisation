@@ -16,7 +16,9 @@ class ViewController: UIViewController , MKMapViewDelegate , CLLocationManagerDe
     @IBOutlet weak var longitudeLabe: UILabel!
     @IBOutlet weak var locationLabel: UILabel!
     @IBOutlet weak var countryLabel: UILabel!
+    @IBOutlet weak var distance: UILabel!
     
+    var pointDeDepart : CLLocation?
     var latitude : CLLocationDegrees = 38.897957
     var longitude : CLLocationDegrees = -77.036560
     
@@ -28,7 +30,7 @@ class ViewController: UIViewController , MKMapViewDelegate , CLLocationManagerDe
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        pointDeDepart = nil
         //make the view controller as a delegate of the location manager
         locationManager.delegate = self as CLLocationManagerDelegate
         //precision
@@ -57,11 +59,15 @@ class ViewController: UIViewController , MKMapViewDelegate , CLLocationManagerDe
     //recuperer la localisation de l'utilisateur et l'affichage de cette derniere dans la carte
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]){
         print(locations)
+        if pointDeDepart == nil {
+            pointDeDepart = locations[0]
+        }
         let userLocalisation:CLLocation = locations[0]
         latitude = userLocalisation.coordinate.latitude
         longitude = userLocalisation.coordinate.longitude
         //tracePositionInTheMap()
-        
+        print("Distance", locations[0].distance(from: pointDeDepart!))
+        distance.text = String(locations[0].distance(from: pointDeDepart!))
         //get date from user location
         getDataFromUserLocation(userLocalisation)
         
